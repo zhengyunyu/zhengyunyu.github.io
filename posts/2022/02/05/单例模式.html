@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    
+    <title>单例模式 | RunHio 的博客 ｜ RunHio Blog</title>
+    <meta name="generator" content="VuePress 1.8.2">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="description" content="个人博客">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    
+    <link rel="preload" href="/assets/css/0.styles.f77d8e52.css" as="style"><link rel="preload" href="/assets/js/app.70cbfe2c.js" as="script"><link rel="preload" href="/assets/js/6.1419a14d.js" as="script"><link rel="preload" href="/assets/js/11.9760aa5a.js" as="script"><link rel="prefetch" href="/assets/js/10.2e15052e.js"><link rel="prefetch" href="/assets/js/12.5dd51cf0.js"><link rel="prefetch" href="/assets/js/13.9cea7209.js"><link rel="prefetch" href="/assets/js/14.a4892ffa.js"><link rel="prefetch" href="/assets/js/15.7e37fdbc.js"><link rel="prefetch" href="/assets/js/16.bfc00efe.js"><link rel="prefetch" href="/assets/js/17.42b751d4.js"><link rel="prefetch" href="/assets/js/18.7d94d9ca.js"><link rel="prefetch" href="/assets/js/19.5bf2dfa4.js"><link rel="prefetch" href="/assets/js/2.ffb60f29.js"><link rel="prefetch" href="/assets/js/20.76be16d6.js"><link rel="prefetch" href="/assets/js/21.d587942b.js"><link rel="prefetch" href="/assets/js/22.0c501fa3.js"><link rel="prefetch" href="/assets/js/23.23075f51.js"><link rel="prefetch" href="/assets/js/24.31b365c9.js"><link rel="prefetch" href="/assets/js/25.c0a22e47.js"><link rel="prefetch" href="/assets/js/26.eb0b9821.js"><link rel="prefetch" href="/assets/js/27.902f48f0.js"><link rel="prefetch" href="/assets/js/28.792bd15b.js"><link rel="prefetch" href="/assets/js/29.1fa1e936.js"><link rel="prefetch" href="/assets/js/3.95e33632.js"><link rel="prefetch" href="/assets/js/30.6289061a.js"><link rel="prefetch" href="/assets/js/31.4caa844a.js"><link rel="prefetch" href="/assets/js/32.469025af.js"><link rel="prefetch" href="/assets/js/33.6c8ad3f6.js"><link rel="prefetch" href="/assets/js/34.a6b6bcf1.js"><link rel="prefetch" href="/assets/js/35.3975429e.js"><link rel="prefetch" href="/assets/js/36.87997eee.js"><link rel="prefetch" href="/assets/js/37.05db4cc6.js"><link rel="prefetch" href="/assets/js/38.8c5a7fbc.js"><link rel="prefetch" href="/assets/js/39.e0da8621.js"><link rel="prefetch" href="/assets/js/4.467972aa.js"><link rel="prefetch" href="/assets/js/40.647a3e55.js"><link rel="prefetch" href="/assets/js/41.98c93d10.js"><link rel="prefetch" href="/assets/js/5.963c915c.js"><link rel="prefetch" href="/assets/js/7.90b85d0e.js"><link rel="prefetch" href="/assets/js/8.2155397b.js"><link rel="prefetch" href="/assets/js/9.ac493e9a.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.f77d8e52.css">
+    <meta id="referrer" name="referrer" content="never" />
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div id="global-layout" data-v-7f2e4136><header class="header-container" style="background-size:cover;background-repeat:no-repeat;background-position:center;background-attachment:scroll;background-image:url(/post-bg.jpeg);" data-v-93921ff8 data-v-7f2e4136><nav class="navbar" style="position:absolute;opacity:1;transition:all 0.5s ease-in-out;" data-v-93921ff8><a href="/" class="navbar-link router-link-active">
+    RunHio'Blog
+  </a> <ul class="navbar-links"><li><a href="/" class="router-link-active">
+        HOME
+      </a></li><li><a href="/about/">
+        ABOUT
+      </a></li><li><a href="/tags/">
+        TAGS
+      </a></li></ul> <div id="nav-icon"><span></span><span></span><span></span></div></nav> <div class="header-title" data-v-93921ff8 data-v-93921ff8><h1 data-v-93921ff8>单例模式</h1> <p data-v-93921ff8></p></div></header> <div class="container" data-v-b3fda33c data-v-7f2e4136><main class="main" style="width:60%;" data-v-b3fda33c><div class="post" data-v-b3fda33c data-v-b3fda33c><article class="main-div"><div class="post-content content content__default"><h2 id="定义"><a href="#定义" class="header-anchor">#</a> 定义</h2> <p>单例模式的定义是：保证一个类仅有一个实例，并提供一个访问它的全局访问点。</p> <p>单例模式是一种常用的模式，有一些对象我们往往只需要一个，比如线程池、全局缓存、浏览器中的window对象。在JavaScript开发中，单例模式的用途同样非常广泛，当我们点击登录按钮时，页面中会出现一个登录浮窗，而这个登录浮窗是唯一的，无论单词多少次，这个浮窗只会被创建一次，那么这个登录浮窗就适合用单例模式来创建。</p> <h2 id="实现单例模式"><a href="#实现单例模式" class="header-anchor">#</a> 实现单例模式</h2> <p>要实现一个标准的单例模式并不复杂，无非是用一个变量来标志当前是否已经为某个类创建过对象，如果是，则在下一次获取该类的实例时，直接返回之前创建的对象。</p> <p>代码如下：</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">let</span> <span class="token function-variable function">Singleton</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token operator">=</span>name
+<span class="token punctuation">}</span>
+
+<span class="token class-name">Singleton</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">getName</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name
+<span class="token punctuation">}</span>
+
+<span class="token comment">//用一个变量标志当前这个类是否被创建</span>
+Singleton<span class="token punctuation">.</span>instance<span class="token operator">=</span><span class="token keyword">null</span>
+Singleton<span class="token punctuation">.</span><span class="token function-variable function">getInstance</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>instance<span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>instance<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>instance
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> a<span class="token operator">=</span>Singleton<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">&quot;a&quot;</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> b<span class="token operator">=</span>Singleton<span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">&quot;b&quot;</span><span class="token punctuation">)</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token operator">===</span>b<span class="token punctuation">)</span><span class="token comment">//true</span>
+</code></pre></div><p>正常来说，一个类每次实例化生成的对象是不同的，在上述代码中使用<code>getInstance</code>获取实例化生成的对象并赋值给<code>a</code>和<code>b</code>，打印<code>true</code>说明单例模式成果。</p> <p>也可以不把生成的实例化对象<code>instance</code>挂载到类的属性上。</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code>Singleton<span class="token punctuation">.</span>getInstance<span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">let</span> instance
+    <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>instance<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            instance<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> instance
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre></div><p>用<code>IIEF</code>创建一个闭包，把<code>instance</code>存储在闭包中，每次执行<code>getInstance</code>时进行判断是否已经实例化过。</p> <h2 id="透明的单例模式"><a href="#透明的单例模式" class="header-anchor">#</a> 透明的单例模式</h2> <p>使用<code>getInstance</code>来获取<code>Singleton</code>类的唯一对象，这种方式相对简单，但是增加了这个类的<code>不透明性</code>。</p> <p><code>Singleton</code>类的使用者必须知道这是一个单例类，跟以往通过<code>new xxx</code>的方式来获取对象有所不同，如果要实例化对象，要使用<code>getInstance</code>的方法，故要实现一种透明的单例模式</p> <p>现有一个需求，使用<code>createDiv</code>单例类，它的作用是在页面中创建唯一的div节点。</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token comment">//createDiv</span>
+<span class="token keyword">let</span> createDiv<span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">let</span> instance
+
+    <span class="token keyword">let</span> <span class="token function-variable function">createDiv</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">html</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> instance
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>html<span class="token operator">=</span>html
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> instance<span class="token operator">=</span><span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+
+    createDiv<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">init</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'init...'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+  
+    <span class="token keyword">return</span> createDiv
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> a<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">createDiv</span><span class="token punctuation">(</span><span class="token string">'html1'</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> b<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">createDiv</span><span class="token punctuation">(</span><span class="token string">'html2'</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token operator">===</span>b<span class="token punctuation">)</span><span class="token comment">//true,且只打印了一次'init...'</span>
+</code></pre></div><p>虽然完成了一个透明的单例类，但存在一些缺点。</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code>    <span class="token keyword">let</span> <span class="token function-variable function">createDiv</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">html</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">return</span> instance
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>html<span class="token operator">=</span>html
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> instance<span class="token operator">=</span><span class="token keyword">this</span>
+    <span class="token punctuation">}</span>
+</code></pre></div><p>在这段代码中，负责了两件事情，第一是创建对象和执行初始化init方法，第二是保证只实例化一个对象。</p> <p>这违背了设计模式中的“单一职责原则”，即一段代码中负责了两种职责。</p> <p>假如某天需要利用这个类，在页面中创建千千万万个<code>div</code>，即要让这个类从单例类变成一个普通的可产生多个实例的类，那么就必须改写<code>createDiv</code>构造函数，把控制创建唯一对象那一段代码去掉，这种修改会带来不必要的麻烦。</p> <p>下面用代理模式实现单例化。</p> <h3 id="用代理实现单例模式"><a href="#用代理实现单例模式" class="header-anchor">#</a> 用代理实现单例模式</h3> <p>首先在<code>createDiv</code>构造函数中，把负责管理单例的代码移除，使它成为一个普通的创建<code>div</code>的类：</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token comment">//代理实现</span>
+<span class="token keyword">var</span> <span class="token function-variable function">createDiv</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">html</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>html <span class="token operator">=</span> html<span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+createDiv<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">init</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&quot;init...&quot;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><p>接下来引入代理类<code>proxySingletonCreateDiv</code>：</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">var</span> ProxySingletonCreateDiv <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> instance<span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>instance<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      instance <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">createDiv</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> instance<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> a<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">ProxySingletonCreateDiv</span><span class="token punctuation">(</span><span class="token string">'html1'</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> b<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">ProxySingletonCreateDiv</span><span class="token punctuation">(</span><span class="token string">'html2'</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">,</span>a<span class="token operator">===</span>b<span class="token punctuation">)</span><span class="token comment">//true</span>
+</code></pre></div><p>通过引入代理类的方式，把负责管理单例的逻辑迁移到了代理类<code>proxySingletonCreateDiv</code>中，这样一来，<code>createDiv</code>就变成了一个普通的类，它与<code>proxySingletonCreateDiv</code>组合起来可以达到单例模式的效果。</p> <h2 id="惰性单例"><a href="#惰性单例" class="header-anchor">#</a> 惰性单例</h2> <p>惰性单例指的是需要的时候才创建对象实例。</p> <p>惰性单例是单例模式的重点，在一开始的例子中就运用到了这种技术。<code>instance</code>实例对象总是在我们调用<code>Singleton.getInstance</code>的时候才创建，并不是在页面加载好的时候才创建。</p> <p>假设有这么一个网站，当点击右上角登录时，会弹出一个登录浮窗，很明显这个浮窗在页面中是唯一的，不可能同时存在两个登录窗口的情况。</p> <p><img src="https://cdn.nlark.com/yuque/0/2022/png/22799595/1644050142568-9888b044-2000-4a85-abac-947a4b28478e.png" alt="img"></p> <p>假如希望可以在进入页面的时候，这个浮窗节点先不创建，而等用户点击登录时才创建，达到惰性效果，那么：</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token operator">&lt;</span>body<span class="token operator">&gt;</span>
+  <span class="token operator">&lt;</span>button id<span class="token operator">=</span><span class="token string">&quot;loginBtn&quot;</span><span class="token operator">&gt;</span>login<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>script<span class="token operator">&gt;</span>
+        <span class="token keyword">var</span> <span class="token function-variable function">createLoginLayer</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">var</span> div <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span>
+            div<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token string">'i am loginLayer'</span>
+            div<span class="token punctuation">.</span>style<span class="token punctuation">.</span>display <span class="token operator">=</span> <span class="token string">'none'</span>
+            document<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>div<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> div
+        <span class="token punctuation">}</span>
+
+        document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">&quot;loginBtn&quot;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">var</span> loginLayer <span class="token operator">=</span> <span class="token function">createLoginLayer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            loginLayer<span class="token punctuation">.</span>style<span class="token punctuation">.</span>display <span class="token operator">=</span> <span class="token string">'block'</span>
+        <span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>body<span class="token operator">&gt;</span>
+</code></pre></div><p>这样虽然达到惰性目的，但每次点击登录按钮时都会创建一个新的登录浮窗<code>div</code>。</p> <p>这里使用单例模式创建浮窗</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token operator">&lt;</span>body<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>button id<span class="token operator">=</span><span class="token string">&quot;loginBtn&quot;</span><span class="token operator">&gt;</span>login<span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span>script<span class="token operator">&gt;</span>
+        <span class="token keyword">var</span> <span class="token function-variable function">getSingle</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">fn</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">let</span> result
+            <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+                <span class="token keyword">return</span> result<span class="token operator">||</span><span class="token punctuation">(</span>result<span class="token operator">=</span><span class="token function">fn</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">var</span> <span class="token function-variable function">createLoginLayer</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            div <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span>
+            div<span class="token punctuation">.</span>innerHTML <span class="token operator">=</span> <span class="token string">'i am loginLayer'</span>
+            div<span class="token punctuation">.</span>style<span class="token punctuation">.</span>display <span class="token operator">=</span> <span class="token string">'none'</span>
+            document<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>div<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> div
+        <span class="token punctuation">}</span>
+
+        <span class="token keyword">var</span> createSingleLoginLayer<span class="token operator">=</span><span class="token function">getSingle</span><span class="token punctuation">(</span>createLoginLayer<span class="token punctuation">)</span>
+
+        document<span class="token punctuation">.</span><span class="token function">getElementById</span><span class="token punctuation">(</span><span class="token string">&quot;loginBtn&quot;</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function-variable function">onclick</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">var</span> loginLayer <span class="token operator">=</span> <span class="token function">createSingleLoginLayer</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            loginLayer<span class="token punctuation">.</span>style<span class="token punctuation">.</span>display <span class="token operator">=</span> <span class="token string">'block'</span>
+        <span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>script<span class="token operator">&gt;</span>
+<span class="token operator">&lt;</span><span class="token operator">/</span>body<span class="token operator">&gt;</span>
+</code></pre></div><p>这个例子中，也是把创建实例对象的职责和管理单例的职责放在两个方法里面，两个方法独立互不影响，当他们连在一起时就实现了单例模式的功能。</p> <h2 id="es6实现单例"><a href="#es6实现单例" class="header-anchor">#</a> ES6实现单例</h2> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">class</span> <span class="token class-name">Singleton</span><span class="token punctuation">{</span>
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token operator">=</span>name
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'init..'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> <span class="token function-variable function">getProxySingleton</span><span class="token operator">=</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">let</span> instance
+    <span class="token keyword">return</span> <span class="token keyword">class</span><span class="token punctuation">{</span>
+        <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token keyword">if</span><span class="token punctuation">(</span>instance<span class="token punctuation">)</span> <span class="token keyword">return</span> instance
+            instance<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Singleton</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+            <span class="token keyword">return</span> instance
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">const</span> ProxySinleton<span class="token operator">=</span><span class="token function">getProxySingleton</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> a<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">ProxySinleton</span><span class="token punctuation">(</span><span class="token string">'name1'</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> b<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">ProxySinleton</span><span class="token punctuation">(</span><span class="token string">'name2'</span><span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span>b<span class="token punctuation">)</span>
+</code></pre></div></div></article> <div class="main-div vssue"><!----></div></div></main> <aside class="aside" data-v-b3fda33c data-v-b3fda33c><div class="info-card main-div" data-v-1311ce9e data-v-b3fda33c><div class="info-card-header" style="background-size:cover;background-repeat:no-repeat;background-position:center;background-attachment:scroll;background-image:url(/bg2.jpg);" data-v-1311ce9e><img src="/avatar-top.jpeg" alt="RunHio" class="info-avatar" data-v-1311ce9e></div> <div class="info-card-body" data-v-1311ce9e><section class="info-name" data-v-1311ce9e>
+      RunHio
+    </section> <section class="info-desc" data-v-1311ce9e>Record Growth</section> <section class="info-contact" data-v-1311ce9e><section data-v-1311ce9e><span data-v-1311ce9e data-v-1311ce9e><svg class="icon" style="font-size:1em;" data-v-1311ce9e data-v-1311ce9e><use xlink:href="#icon-location" data-v-1311ce9e data-v-1311ce9e></use></svg><span class="info-text" data-v-1311ce9e data-v-1311ce9e>
+          Guangzhou, China
+        </span></span></section> <!----> <section data-v-1311ce9e><span data-v-1311ce9e data-v-1311ce9e><svg class="icon" style="font-size:1em;" data-v-1311ce9e data-v-1311ce9e><use xlink:href="#icon-email" data-v-1311ce9e data-v-1311ce9e></use></svg><span class="info-text" data-v-1311ce9e data-v-1311ce9e>
+          1056333479@qq.com
+        </span></span></section></section></div> <div class="info-card-footer" data-v-1311ce9e><p class="footer-sns-link" data-v-1311ce9e><a target="_blank" class="sns-link" data-v-1311ce9e><span class="sns-icon" data-v-1311ce9e data-v-1311ce9e><svg class="icon" style="font-size:35px;" data-v-1311ce9e data-v-1311ce9e><use xlink:href="#icon-csdn" data-v-1311ce9e data-v-1311ce9e></use></svg></span></a><a target="_blank" class="sns-link" data-v-1311ce9e><span class="sns-icon" data-v-1311ce9e data-v-1311ce9e><svg class="icon" style="font-size:35px;" data-v-1311ce9e data-v-1311ce9e><use xlink:href="#icon-weibo" data-v-1311ce9e data-v-1311ce9e></use></svg></span></a><a target="_blank" class="sns-link" data-v-1311ce9e><span class="sns-icon" data-v-1311ce9e data-v-1311ce9e><svg class="icon" style="font-size:35px;" data-v-1311ce9e data-v-1311ce9e><use xlink:href="#icon-juejin" data-v-1311ce9e data-v-1311ce9e></use></svg></span></a><a target="_blank" class="sns-link" data-v-1311ce9e><span class="sns-icon" data-v-1311ce9e data-v-1311ce9e><svg class="icon" style="font-size:35px;" data-v-1311ce9e data-v-1311ce9e><use xlink:href="#icon-zhihu" data-v-1311ce9e data-v-1311ce9e></use></svg></span></a><a target="_blank" class="sns-link" data-v-1311ce9e><span class="sns-icon" data-v-1311ce9e data-v-1311ce9e><svg class="icon" style="font-size:35px;" data-v-1311ce9e data-v-1311ce9e><use xlink:href="#icon-github" data-v-1311ce9e data-v-1311ce9e></use></svg></span></a></p></div></div> <div class="post-toc main-div aside-toc" style="position:relative;top:0;width:0px;" data-v-b3fda33c><h4>- CATALOG</h4> <div class="post-nav-toc"><ul><li><a href="/posts/2022/02/05/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.html#定义">定义</a></li><li><a href="/posts/2022/02/05/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.html#实现单例模式">实现单例模式</a></li><li><a href="/posts/2022/02/05/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.html#透明的单例模式">透明的单例模式</a><ul><li><a href="/posts/2022/02/05/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.html#用代理实现单例模式">用代理实现单例模式</a></li></ul></li><li><a href="/posts/2022/02/05/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.html#惰性单例">惰性单例</a></li><li><a href="/posts/2022/02/05/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F.html#es6实现单例">ES6实现单例</a></li></ul></div></div></aside></div> <footer class="footer" data-v-7f2e4136><p class="footer-sns-link"><a target="_blank" class="sns-link"><span class="sns-icon"><svg class="icon" style="font-size:40px;"><use xlink:href="#icon-csdn"></use></svg></span></a><a target="_blank" class="sns-link"><span class="sns-icon"><svg class="icon" style="font-size:40px;"><use xlink:href="#icon-weibo"></use></svg></span></a><a target="_blank" class="sns-link"><span class="sns-icon"><svg class="icon" style="font-size:40px;"><use xlink:href="#icon-juejin"></use></svg></span></a><a target="_blank" class="sns-link"><span class="sns-icon"><svg class="icon" style="font-size:40px;"><use xlink:href="#icon-zhihu"></use></svg></span></a><a target="_blank" class="sns-link"><span class="sns-icon"><svg class="icon" style="font-size:40px;"><use xlink:href="#icon-github"></use></svg></span></a></p> <div class="copyright"><span id="custom">Copyright &copy; RunHio Blog 2021 <br /> </span> <!----></div></footer></div><div class="global-ui"><!----><!----></div></div>
+    <script src="/assets/js/app.70cbfe2c.js" defer></script><script src="/assets/js/6.1419a14d.js" defer></script><script src="/assets/js/11.9760aa5a.js" defer></script>
+  </body>
+</html>
